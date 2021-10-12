@@ -31,6 +31,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -99,9 +100,54 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        }
+      }
+    },
+    "avatar": {
+      "projectType": "library",
+      "root": "projects/avatar",
+      "sourceRoot": "projects/avatar/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/avatar/tsconfig.lib.json",
+            "project": "projects/avatar/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/avatar/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/avatar/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/avatar/src/test.ts",
+            "tsConfig": "projects/avatar/tsconfig.spec.json",
+            "karmaConfig": "projects/avatar/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/avatar/tsconfig.lib.json",
+              "projects/avatar/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
