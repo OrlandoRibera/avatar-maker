@@ -1,0 +1,42 @@
+.main-heading {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.main-heading-text {
+  color: #5d3155;
+  font-weight: 400;
+  font-size: 32px;
+}
+
+.user-avatar {
+  width: 200px;
+  height: 200px;
+}
+
+.start {
+  margin: auto;
+  display: block;
+  width: 50%;
+}
+
+.option {
+  width: 30%;
+}
+
+.optionSelection {
+  width: 70%;
+}
+
+spacer {
+  display: flex;
+  flex-grow: 1;
+}
+.bottomButton {
+  background-color: #5d3155;
+}
+.tweetButton {
+  background-color: #1da1f2;
+  color: white;
+  text-decoration: none;
+}

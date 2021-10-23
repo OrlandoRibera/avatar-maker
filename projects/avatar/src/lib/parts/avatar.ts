@@ -5,7 +5,6 @@ import { FaceHelper } from './face';
 import { TopsHelper } from './tops';
 
 export class AvatarHelper {
-
   public static getSvg(options: AvatarOptions) {
     return `
   <svg
@@ -78,15 +77,24 @@ export class AvatarHelper {
   fill="#000000"
   mask="url(#mask-6)"
     /></g>
- ${ClothesHelper.getClothesSvg(options.clothes, options.clothColor, options.graphic)}
+ ${ClothesHelper.getClothesSvg(
+   options.clothes,
+   options.clothColor,
+   options.graphic
+ )}
   ${FaceHelper.getFaceSvg(options.mouth, options.eyes, options.eyebrow)}
-  ${TopsHelper.getTopSvg(options.top, options.facialHair, options.accessories,
-      options.hatColor, options.facialHairColor, options.hairColor)}
+  ${TopsHelper.getTopSvg(
+    options.top,
+    options.facialHair,
+    options.accessories,
+    options.hatColor,
+    options.facialHairColor,
+    options.hairColor
+  )}
   </g>
 </g>
 </g>
 </g>
 </svg>`;
   }
-
 }

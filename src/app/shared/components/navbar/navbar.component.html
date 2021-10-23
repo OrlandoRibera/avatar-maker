@@ -1,0 +1,14 @@
+<!-- Header Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="/">Avatar Maker</a>
+    <span class="navbar-text" *ngIf="user">
+      {{ user.username | uppercase }} |
+      <a
+        class="link-info"
+        [routerLink]="['/logout']"
+        >Cerrar sesión</a
+      >
+    </span>
+  </div>
+</nav>

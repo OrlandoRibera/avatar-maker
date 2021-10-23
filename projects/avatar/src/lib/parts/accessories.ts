@@ -1,4 +1,4 @@
-import {Accessories} from '../avatar.enum';
+import { Accessories } from '../avatar.enum';
 
 export class AccessoriesHelper {
   public static getAccessorySvg(acc: Accessories) {

@@ -14,24 +14,33 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-
+import { CoreModule } from './core/core.module';
+import { MatCardModule } from '@angular/material/card';
+import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
+import { AvatarMkrComponent } from './modules/avatar/avatar-mkr/avatar-mkr.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AvatarMkrComponent, NavbarComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     AvatarModule,
     BrowserAnimationsModule,
     MatRadioModule,
     FormsModule,
+    AppRoutingModule,
     MatSelectModule,
     MatFormFieldModule,
     MatIconModule,
     CommonModule,
+    HttpClientModule,
     ReactiveFormsModule,
     MatDividerModule,
     MatButtonModule,
+    MatCardModule,
+    ToastrModule.forRoot(),
   ],
+  exports: [NavbarComponent],
   providers: [],
   bootstrap: [AppComponent],
 })
