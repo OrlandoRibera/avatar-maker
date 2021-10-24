@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import {
@@ -16,13 +16,22 @@ import {
   ClothesColor,
   HatColor,
   HairColor,
-  AvatarStyle,
   AvatarOptions,
 } from '../../../../../projects/avatar/src/public-api';
 
 import { saveAs } from 'file-saver';
 import { filter } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
+import {
+  faRandom,
+  faArrowRight,
+  faPallet,
+  faCopy,
+  faDownload,
+  faCode,
+  faUpload,
+} from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'avatar-mkr',
   templateUrl: './avatar-mkr.component.html',
@@ -31,9 +40,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AvatarMkrComponent implements OnInit {
   avatarForm: FormGroup;
   options: AvatarOptions;
-  public canvasRef: HTMLCanvasElement;
-  public angularCode;
-  showAngular = false;
+  canvasRef: HTMLCanvasElement;
+  angularCode: string;
   showImage = false;
   showSvg = false;
   svgData: string;
@@ -57,13 +65,21 @@ export class AvatarMkrComponent implements OnInit {
   tops: Array<any>;
   avatarStyle: Array<any>;
 
+  // icons
+  faRandom = faRandom;
+  faArrowRight = faArrowRight;
+  faPallet = faPallet;
+  faCopy = faCopy;
+  faDownload = faDownload;
+  faCode = faCode;
+  faUpload = faUpload;
+
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
     this.options = new AvatarOptions();
 
     this.avatarForm = new FormGroup({
-      avatarStyle: new FormControl(this.options.style),
       top: new FormControl(this.options.top),
       accessories: new FormControl(this.options.accessories),
       hairColor: new FormControl(this.options.hairColor),
@@ -83,7 +99,6 @@ export class AvatarMkrComponent implements OnInit {
     this.avatarForm.valueChanges.subscribe((value) => {
       this.options = value;
 
-      this.toggleAngular(false);
       setTimeout(() => {
         return this.toggleSvg(false);
       }, 0);
@@ -123,13 +138,11 @@ export class AvatarMkrComponent implements OnInit {
     this.graphic = this.getEnumTupple(Graphic);
     this.hatColor = this.getEnumTupple(HatColor);
     this.hairColor = this.getEnumTupple(HairColor);
-    this.avatarStyle = this.getEnumTupple(AvatarStyle);
 
     this.activatedRoute.queryParams
       .pipe(filter((a) => !!a))
       .subscribe((data) => {
         if (data['top']) {
-          this.options.style = data['avatarStyle'];
           this.options.top = data['top'];
           this.options.accessories = data['accessories'];
           this.options.hairColor = data['hairColor'];
@@ -146,7 +159,6 @@ export class AvatarMkrComponent implements OnInit {
           this.options.graphic = data['graphic'];
 
           this.avatarForm.patchValue({
-            avatarStyle: data['avatarStyle'],
             top: data['top'],
             accessories: data['accessories'],
             hairColor: data['hairColor'],
@@ -177,7 +189,6 @@ export class AvatarMkrComponent implements OnInit {
 
     this.options.getRandom();
     this.avatarForm.patchValue({
-      avatarStyle: this.options.style,
       top: this.options.top,
       accessories: this.options.accessories,
       hairColor: this.options.hairColor,
@@ -213,53 +224,29 @@ export class AvatarMkrComponent implements OnInit {
       },
     });
   }
-
-  toggleAngular(bool) {
-    if (bool) {
-      this.showAngular = !this.showAngular;
-      this.showImage = false;
-      this.showSvg = false;
-    }
-    var jsonString = JSON.stringify(this.options, null, ' ');
-
-    jsonString = jsonString.replace(/[{}]/g, '');
-    jsonString = jsonString.replace(/[:]/g, ' =');
-    jsonString = jsonString.replace(/[      ]/g, '');
-    jsonString = jsonString.replace(/[""]/g, '');
-
-    this.angularCode = '<app-avatar ' + jsonString + '></app-avatar>';
-  }
-
-  toggleImage() {
+  toggleImage(): void {
     this.showImage = !this.showImage;
-    this.showAngular = false;
     this.showSvg = false;
     this.toggleSvg(false);
   }
-  toggleSvg(bool) {
+
+  toggleSvg(bool: boolean): void {
     if (bool) {
       this.showSvg = !this.showSvg;
-      this.showAngular = false;
       this.showImage = false;
     }
     const svgNode = document.getElementById('svgid');
     this.svgData = svgNode.innerHTML;
   }
 
-  downloadSvg() {
+  downloadSvg(): void {
     const svgNode = document.getElementById('svgid');
     const data = svgNode.innerHTML;
     const svg = new Blob([data], { type: 'image/svg+xml' });
     saveAs(svg, 'avatar.svg');
   }
 
-  copyText(inputElement) {
-    inputElement.select();
-    document.execCommand('copy');
-    inputElement.setSelectionRange(0, 0);
-  }
-
-  public onDownloadPNG = () => {
+  public onDownloadPNG = (): void => {
     const svgNode = document.getElementById('svgid');
     const canvas = document.getElementById('canvasRef') as HTMLCanvasElement;
     canvas.width = 400;
@@ -279,7 +266,8 @@ export class AvatarMkrComponent implements OnInit {
       ctx.restore();
       DOMURL.revokeObjectURL(url);
       canvas.toBlob((imageBlob) => {
-        this.triggerDownload(imageBlob, 'avataaars.png');
+        const timespan = new Date().getTime();
+        this.triggerDownload(imageBlob, `avatar${timespan}.png`);
       });
     };
     img.src = url;
@@ -289,7 +277,7 @@ export class AvatarMkrComponent implements OnInit {
     saveAs(imageBlob, fileName);
   }
 
-  showColourFabric() {
+  showColourFabric(): boolean {
     if (
       this.options.clothes === this.clothesEnum.BLAZER_SHIRT ||
       this.options.clothes === this.clothesEnum.BLAZER_SWEATER
@@ -298,7 +286,7 @@ export class AvatarMkrComponent implements OnInit {
     }
     return true;
   }
-  showHatColour() {
+  showHatColour(): boolean {
     if (
       this.options.top === this.topsEnum.HIJAB ||
       this.options.top === this.topsEnum.TURBAN ||
@@ -310,7 +298,7 @@ export class AvatarMkrComponent implements OnInit {
       return true;
     } else return false;
   }
-  showHairColour() {
+  showHairColour(): boolean {
     if (
       this.options.top === this.topsEnum.LONGHAIR_BIGHAIR ||
       this.options.top === this.topsEnum.LONGHAIR_BOB ||
@@ -341,15 +329,7 @@ export class AvatarMkrComponent implements OnInit {
     } else return false;
   }
 
-  tweet() {
-    const twitterurl = 'https://twitter.com/intent/tweet?';
-    const hashtags = 'avataaars,avatar,angular';
-    const original_referer =
-      'https://shivam1410.github.io/fangpenlin-avataaars-generator-angular/';
-    const text = 'I just created my avataaars here 😆';
-    const appurl =
-      'https://shivam1410.github.io/fangpenlin-avataaars-generator-angular/';
-    let url = `${twitterurl}hashtags=${hashtags}&original_referer=${original_referer}&ref_src=twsrc%5Etfw&text=${text}&tw_p=tweetbutton&url=${appurl}`;
-    window.open(url);
+  save(): void {
+    console.log(this.avatarForm.value);
   }
 }

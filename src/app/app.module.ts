@@ -20,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { AvatarMkrComponent } from './modules/avatar/avatar-mkr/avatar-mkr.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @NgModule({
   declarations: [AppComponent, AvatarMkrComponent, NavbarComponent],
   imports: [
@@ -38,6 +39,7 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
     MatDividerModule,
     MatButtonModule,
     MatCardModule,
+    FontAwesomeModule,
     ToastrModule.forRoot(),
   ],
   exports: [NavbarComponent],
