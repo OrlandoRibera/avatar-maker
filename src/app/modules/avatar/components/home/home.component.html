@@ -1,0 +1,25 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="row mt-4">
+    <ng-container *ngFor="let avatar of avatars">
+      <div class="col-sm-4 mr-3 mb-3">
+        <div class="card text-center shadow" style="width: 18rem;">
+          <avatar class="card-img-top" [options]="avatar.options"></avatar>
+          <div class="card-body">
+            <h5 class="card-title">Autor: {{avatar._creator.username}}</h5>
+            <p class="card-text">Este avatar fue creado por {{avatar._creator.username}}, para contacto dirigirse a:
+              <br>
+              <a href="mailto:{{avatar._creator.email}}">{{avatar._creator.email}}</a>
+            <div class="mt-3">
+              <button class="btn btn-primary btn-sm disabled" disabled *ngIf="getUserId() === avatar._creator._id">
+                ¡Eres el autor!
+              </button>
+              <button class="btn btn-primary btn-sm" *ngIf="getUserId() !== avatar._creator._id" (click)="copiarAvatar(avatar.options)">Copiar avatar
+                :D</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

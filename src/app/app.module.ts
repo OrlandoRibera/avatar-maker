@@ -16,13 +16,20 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { CoreModule } from './core/core.module';
 import { MatCardModule } from '@angular/material/card';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
-import { AvatarMkrComponent } from './modules/avatar/avatar-mkr/avatar-mkr.component';
+import { AvatarMkrComponent } from './modules/avatar/components/avatar-mkr/avatar-mkr.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HomeComponent } from './modules/avatar/components/home/home.component';
+import { AuthInterceptorService } from './services/auth-interceptor.service';
 @NgModule({
-  declarations: [AppComponent, AvatarMkrComponent, NavbarComponent],
+  declarations: [
+    AppComponent,
+    AvatarMkrComponent,
+    HomeComponent,
+    NavbarComponent,
+  ],
   imports: [
     BrowserModule,
     AvatarModule,
@@ -43,7 +50,13 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     ToastrModule.forRoot(),
   ],
   exports: [NavbarComponent],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

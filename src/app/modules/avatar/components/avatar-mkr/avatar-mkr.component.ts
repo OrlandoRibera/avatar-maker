@@ -17,11 +17,13 @@ import {
   HatColor,
   HairColor,
   AvatarOptions,
-} from '../../../../../projects/avatar/src/public-api';
+} from '../../../../../../projects/avatar/src/public-api';
 
 import { saveAs } from 'file-saver';
 import { filter } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FacadeService } from '../../facade/facade.service';
+import { ToastrService } from 'ngx-toastr';
 import {
   faRandom,
   faArrowRight,
@@ -74,7 +76,12 @@ export class AvatarMkrComponent implements OnInit {
   faCode = faCode;
   faUpload = faUpload;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private facade: FacadeService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.options = new AvatarOptions();
@@ -331,5 +338,14 @@ export class AvatarMkrComponent implements OnInit {
 
   save(): void {
     console.log(this.avatarForm.value);
+    this.facade.save(this.avatarForm.value).subscribe(
+      (response) => {
+        this.toastr.success('Publicación exitosa');
+        this.router.navigate(['/']);
+      },
+      (error) => {
+        this.toastr.error('No se pudo guardar el avatar');
+      }
+    );
   }
 }
